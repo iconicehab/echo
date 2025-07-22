@@ -32,6 +32,9 @@ RUN npm install && npm run build
 # Set permissions
 RUN chown -R www-data:www-data /var/www
 
+# Clear Laravel caches to ensure correct APP_URL usage
+RUN php artisan config:clear && php artisan view:clear && php artisan route:clear
+
 # Expose port 8000 and start Laravel server
 EXPOSE 8000
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000} 
